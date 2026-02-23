@@ -40,14 +40,14 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-ios-light-bg via-slate-100 to-ios-light-secondary dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors duration-300">
       {screen !== 'live' && (
-        <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm px-6 py-4">
+        <header className="border-b border-black/10 dark:border-white/10 bg-white/60 dark:bg-black/20 backdrop-blur-xl backdrop-saturate-180 px-6 py-4">
           <div className="max-w-lg mx-auto">
-            <h1 className="text-2xl font-bold tracking-tight text-white">
-              Smash<span className="text-emerald-400">Roster</span>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Smash<span className="text-emerald-500 dark:text-emerald-400">Roster</span>
             </h1>
-            <p className="text-sm text-slate-400 mt-0.5">Fair rotations for your paddle group</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5">Fair rotations for your paddle group</p>
           </div>
         </header>
       )}

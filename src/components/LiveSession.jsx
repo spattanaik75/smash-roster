@@ -77,8 +77,8 @@ export default function LiveSession({ config, onEnd }) {
 
   if (!currentRound && rounds.length === 0) {
     return (
-      <div className="text-slate-400 text-sm">
-        No rounds. <button type="button" onClick={() => onEnd({ config, rounds: [] })} className="underline text-emerald-400">Back to setup</button>
+      <div className="text-slate-600 dark:text-slate-400 text-sm">
+        No rounds. <button type="button" onClick={() => onEnd({ config, rounds: [] })} className="underline text-emerald-600 dark:text-emerald-400">Back to setup</button>
       </div>
     )
   }
@@ -95,16 +95,16 @@ export default function LiveSession({ config, onEnd }) {
         <div className="flex items-center gap-2">
           {!isOnAddTab ? (
             <>
-              <span className="text-sm font-medium text-white">
+              <span className="text-sm font-medium text-slate-900 dark:text-white">
                 Round {slideIndex + 1}
               </span>
-              <span className="text-xs text-slate-500">of {totalRounds}</span>
+              <span className="text-xs text-slate-500 dark:text-slate-500">of {totalRounds}</span>
             </>
           ) : (
-            <span className="text-sm font-medium text-emerald-400">Add more rounds</span>
+            <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">Add more rounds</span>
           )}
         </div>
-        <div className="flex items-center gap-2 text-xs text-slate-400">
+        <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -123,7 +123,7 @@ export default function LiveSession({ config, onEnd }) {
           <button
             type="button"
             onClick={goPrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 backdrop-blur flex items-center justify-center text-white hover:bg-black/60 transition-all shadow-lg"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/60 dark:bg-black/40 backdrop-blur-xl backdrop-saturate-180 flex items-center justify-center text-slate-800 dark:text-white hover:bg-white/80 dark:hover:bg-black/60 transition-all shadow-lg"
             aria-label="Previous round"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,7 +141,7 @@ export default function LiveSession({ config, onEnd }) {
                 goToSlide(slideIndex + 1)
               }
             }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 backdrop-blur flex items-center justify-center text-white hover:bg-black/60 transition-all shadow-lg"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/60 dark:bg-black/40 backdrop-blur-xl backdrop-saturate-180 flex items-center justify-center text-slate-800 dark:text-white hover:bg-white/80 dark:hover:bg-black/60 transition-all shadow-lg"
             aria-label="Next"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,8 +179,8 @@ export default function LiveSession({ config, onEnd }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
             </button>
-            <p className="mt-4 text-sm text-slate-400">Tap to add another round</p>
-            <p className="text-xs text-slate-500 mt-1">~{leftoverAfterFinish} min remaining</p>
+            <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">Tap to add another round</p>
+            <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">~{leftoverAfterFinish} min remaining</p>
           </div>
         )}
       </div>
@@ -196,8 +196,8 @@ export default function LiveSession({ config, onEnd }) {
               idx === slideIndex
                 ? 'w-8 h-2 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/50'
                 : idx < slideIndex
-                  ? 'w-2 h-2 rounded-full bg-slate-600'
-                  : 'w-2 h-2 rounded-full bg-slate-700 hover:bg-slate-600'
+                  ? 'w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-600'
+                  : 'w-2 h-2 rounded-full bg-slate-500 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600'
             }`}
             aria-label={`Go to round ${idx + 1}`}
           />
@@ -209,7 +209,7 @@ export default function LiveSession({ config, onEnd }) {
             className={`transition-all duration-300 ${
               isOnAddTab
                 ? 'w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/50 flex items-center justify-center'
-                : 'w-6 h-6 rounded-full bg-slate-700 hover:bg-slate-600 flex items-center justify-center'
+                : 'w-6 h-6 rounded-full bg-slate-500 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 flex items-center justify-center'
             }`}
             aria-label="Add round"
           >
@@ -221,8 +221,8 @@ export default function LiveSession({ config, onEnd }) {
       </div>
 
       {/* Fairness so far – compact */}
-      <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-3 mb-3">
-        <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+      <div className="glass-card rounded-xl p-3 mb-3">
+        <p className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
           Games · Rest
         </p>
         <div className="flex flex-wrap gap-2">
@@ -231,7 +231,7 @@ export default function LiveSession({ config, onEnd }) {
             return (
               <span
                 key={s.name}
-                className="inline-flex items-center gap-1.5 text-xs bg-white/10 backdrop-blur border border-white/20 rounded-lg px-3 py-1.5 transition-all hover:bg-white/15"
+                className="glass-button inline-flex items-center gap-1.5 text-xs rounded-lg px-3 py-1.5 transition-all hover:bg-white/70 dark:hover:bg-white/15"
               >
                 {avatar && (
                   <img 
@@ -240,8 +240,8 @@ export default function LiveSession({ config, onEnd }) {
                     className="w-4 h-4 rounded-full object-cover"
                   />
                 )}
-                <span className="font-medium text-white truncate max-w-[3.5rem]">{s.name}</span>
-                <span className="text-slate-400">{s.games}·{s.restRounds}</span>
+                <span className="font-medium text-slate-800 dark:text-white truncate max-w-[3.5rem]">{s.name}</span>
+                <span className="text-slate-600 dark:text-slate-400">{s.games}·{s.restRounds}</span>
               </span>
             )
           })}
@@ -253,7 +253,7 @@ export default function LiveSession({ config, onEnd }) {
         <button
           type="button"
           onClick={goNext}
-          className="flex-1 py-3 px-5 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white text-sm font-semibold touch-manipulation hover:bg-white/15 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+          className="glass-button flex-1 py-3 px-5 rounded-xl text-slate-800 dark:text-white text-sm font-semibold touch-manipulation hover:bg-white/70 dark:hover:bg-white/15 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-lg"
         >
           {isLastRound ? 'Finish session' : 'Next round'}
         </button>
@@ -268,7 +268,7 @@ export default function LiveSession({ config, onEnd }) {
         )}
       </div>
       {canAddRound && (
-        <p className="text-xs text-slate-500 pt-2 text-center animate-fade-in">
+        <p className="text-xs text-slate-600 dark:text-slate-500 pt-2 text-center animate-fade-in">
           ~{leftoverAfterFinish} min left in session
         </p>
       )}
@@ -284,15 +284,15 @@ export function SummaryScreen({ config, rounds, onNewSession, onContinue }) {
 
   return (
     <div className="space-y-6 animate-slide-up">
-      <div className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-2xl">
-        <h2 className="text-lg font-semibold text-white mb-4">Session summary</h2>
+      <div className="glass-card-strong rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Session summary</h2>
         <div className="space-y-2">
           {stats.map((s, idx) => {
             const avatar = avatars.get(s.name)
             return (
               <div
                 key={s.name}
-                className="flex items-center justify-between py-3 px-4 rounded-lg bg-white/5 border border-white/10 animate-fade-in"
+                className="flex items-center justify-between py-3 px-4 rounded-lg glass-card animate-fade-in"
                 style={{ animationDelay: `${idx * 0.05}s` }}
               >
                 <div className="flex items-center gap-2.5">
@@ -300,12 +300,12 @@ export function SummaryScreen({ config, rounds, onNewSession, onContinue }) {
                     <img 
                       src={avatar.icon} 
                       alt="" 
-                      className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
+                      className="w-8 h-8 rounded-full object-cover border-2 border-black/10 dark:border-white/20"
                     />
                   )}
-                  <span className="font-medium text-white">{s.name}</span>
+                  <span className="font-medium text-slate-900 dark:text-white">{s.name}</span>
                 </div>
-                <div className="flex items-center gap-4 text-sm text-slate-400">
+                <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
                   <span>{s.games} games</span>
                   <span>{s.restRounds} rests</span>
                 </div>
@@ -319,7 +319,7 @@ export function SummaryScreen({ config, rounds, onNewSession, onContinue }) {
         <button
           type="button"
           onClick={onNewSession}
-          className="flex-1 py-4 px-6 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white text-base font-semibold shadow-lg touch-manipulation hover:bg-white/15 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          className="glass-button flex-1 py-4 px-6 rounded-xl text-slate-800 dark:text-white text-base font-semibold shadow-lg touch-manipulation hover:bg-white/70 dark:hover:bg-white/15 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
         >
           New session
         </button>
@@ -334,7 +334,7 @@ export function SummaryScreen({ config, rounds, onNewSession, onContinue }) {
         )}
       </div>
       {canContinue && (
-        <p className="text-xs text-slate-500 text-center">~{leftover} min remaining</p>
+        <p className="text-xs text-slate-600 dark:text-slate-500 text-center">~{leftover} min remaining</p>
       )}
     </div>
   )

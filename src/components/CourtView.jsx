@@ -8,7 +8,7 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
     const avatar = avatars?.get(name)
     return (
       <div
-        className="flex items-center gap-2 rounded-xl bg-white/95 backdrop-blur px-3 py-2.5 shadow-xl border border-white/50 animate-slide-up"
+        className="flex items-center gap-2 rounded-xl glass-card-strong px-3 py-2.5 shadow-xl animate-slide-up"
         style={{ animationDelay: `${delay}s` }}
       >
         {avatar && (
@@ -18,7 +18,7 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
             className="w-6 h-6 rounded-full object-cover"
           />
         )}
-        <span className="text-sm font-semibold text-slate-800">{name}</span>
+        <span className="text-sm font-semibold text-slate-800 dark:text-white">{name}</span>
       </div>
     )
   }
@@ -27,7 +27,7 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
     <div className="w-full max-w-sm mx-auto animate-scale-in">
       {/* Court: vertical rectangle (portrait) with gradient and net */}
       <div
-        className="relative w-full rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20"
+        className="relative w-full rounded-2xl overflow-hidden shadow-2xl border-2 border-black/10 dark:border-white/20"
         style={{ aspectRatio: '5/6' }}
       >
         {/* Court background with gradient */}
@@ -82,14 +82,14 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
       {/* Resting: outside court, below */}
       {rest.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center justify-center gap-2 animate-fade-in">
-          <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Sitting out</span>
+          <span className="text-xs font-medium text-slate-600 dark:text-slate-500 uppercase tracking-wider">Sitting out</span>
           <div className="flex flex-wrap justify-center gap-2">
             {rest.map((name) => {
               const avatar = avatars?.get(name)
               return (
                 <span
                   key={name}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 backdrop-blur border border-white/20 px-3 py-1.5 text-sm text-slate-300 shadow-lg"
+                  className="glass-button inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-700 dark:text-slate-300 shadow-lg"
                 >
                   {avatar && (
                     <img 

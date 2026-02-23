@@ -98,13 +98,13 @@ export default function SessionSetup({ onStart, urlSession }) {
 
   return (
     <div className="space-y-5 animate-slide-up">
-      <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-2xl">
-        <h2 className="text-lg font-semibold text-white mb-6">Session setup</h2>
+      <div className="glass-card-strong rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Session setup</h2>
         
         <div className="space-y-5">
           {/* Game mode */}
           <div>
-            <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
               Game mode
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -114,7 +114,7 @@ export default function SessionSetup({ onStart, urlSession }) {
                 className={`relative py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 touch-manipulation ${
                   gameMode === 'singles'
                     ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/50 scale-[1.02]'
-                    : 'bg-white/10 border border-white/20 text-slate-300 hover:bg-white/15'
+                    : 'glass-button text-slate-700 dark:text-slate-300 hover:bg-white/70 dark:hover:bg-white/15'
                 }`}
               >
                 Singles
@@ -128,7 +128,7 @@ export default function SessionSetup({ onStart, urlSession }) {
                 className={`relative py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 touch-manipulation ${
                   gameMode === 'doubles'
                     ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/50 scale-[1.02]'
-                    : 'bg-white/10 border border-white/20 text-slate-300 hover:bg-white/15'
+                    : 'glass-button text-slate-700 dark:text-slate-300 hover:bg-white/70 dark:hover:bg-white/15'
                 }`}
               >
                 Doubles
@@ -142,7 +142,7 @@ export default function SessionSetup({ onStart, urlSession }) {
           {/* Duration inputs */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
                 Session (min)
               </label>
               <input
@@ -152,11 +152,11 @@ export default function SessionSetup({ onStart, urlSession }) {
                 step={15}
                 value={sessionDuration}
                 onChange={(e) => setSessionDuration(Number(e.target.value) || 60)}
-                className="w-full py-2.5 px-3 rounded-lg bg-white/10 border border-white/20 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
+                className="glass-input w-full py-2.5 px-3 rounded-lg text-slate-900 dark:text-white text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
                 Match (min)
               </label>
               <input
@@ -166,7 +166,7 @@ export default function SessionSetup({ onStart, urlSession }) {
                 step={5}
                 value={matchDuration}
                 onChange={(e) => setMatchDuration(Number(e.target.value) || 10)}
-                className="w-full py-2.5 px-3 rounded-lg bg-white/10 border border-white/20 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
+                className="glass-input w-full py-2.5 px-3 rounded-lg text-slate-900 dark:text-white text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
               />
             </div>
           </div>
@@ -174,13 +174,13 @@ export default function SessionSetup({ onStart, urlSession }) {
           {/* Players */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">
+              <label className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Players
               </label>
               <button
                 type="button"
                 onClick={loadLast}
-                className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+                className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors"
               >
                 Load last
               </button>
@@ -190,9 +190,9 @@ export default function SessionSetup({ onStart, urlSession }) {
               onChange={(e) => setPlayerInput(e.target.value)}
               placeholder="One per line or comma"
               rows={6}
-              className="w-full py-3 px-4 rounded-lg bg-white/10 border border-white/20 text-white text-sm placeholder:text-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
+              className="glass-input w-full py-3 px-4 rounded-lg text-slate-900 dark:text-white text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
             />
-            <p className="mt-2 text-xs text-slate-400">
+            <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
               {players.length} player{players.length !== 1 ? 's' : ''} · need {perCourt}+ per match
             </p>
           </div>
@@ -212,7 +212,7 @@ export default function SessionSetup({ onStart, urlSession }) {
           type="button"
           onClick={handleShare}
           disabled={!canStart}
-          className="py-4 px-5 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white font-semibold shadow-lg touch-manipulation disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/15 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          className="glass-button py-4 px-5 rounded-xl text-slate-800 dark:text-white font-semibold shadow-lg touch-manipulation disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/70 dark:hover:bg-white/15 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           title="Share session"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,7 +221,7 @@ export default function SessionSetup({ onStart, urlSession }) {
         </button>
       </div>
       {showShareCopied && (
-        <p className="text-xs text-emerald-400 text-center animate-fade-in">Link copied to clipboard!</p>
+        <p className="text-xs text-emerald-600 dark:text-emerald-400 text-center animate-fade-in">Link copied to clipboard!</p>
       )}
     </div>
   )
