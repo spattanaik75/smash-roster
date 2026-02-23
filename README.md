@@ -2,7 +2,9 @@
 
 Fair rotations for your paddle group.
 
-**[Launch App →](https://spattanaik75.github.io/smash-roster/)**
+## Live App
+
+**Try it now: [https://spattanaik75.github.io/smash-roster/](https://spattanaik75.github.io/smash-roster/)**
 
 ## Overview
 
