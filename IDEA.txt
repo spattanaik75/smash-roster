@@ -1,0 +1,217 @@
+🏓 Paddle Rotation App – Initial Proposal
+1. Problem Statement
+
+In recreational paddle sessions:
+
+1–2 courts are booked for a fixed duration (e.g., 2 hours)
+
+9–15 players attend
+
+Games are 4 players per court
+
+Manual rotation becomes chaotic
+
+Some players overplay, some sit too long
+
+Tracking fairness is difficult
+
+Additionally, shared court expenses are often calculated manually and inconsistently.
+
+2. Proposed Solution
+
+A mobile-first static web app that:
+
+Evenly rotates players across courts
+
+Minimizes repeated pairings
+
+Ensures balanced playtime
+
+Works fully client-side (no backend initially)
+
+Can later support expense splitting
+
+The app will focus on:
+
+Fair rotations
+
+Simple UI
+
+Fast setup
+
+No login required (v1)
+
+3. Target Users
+
+Social paddle groups
+
+Weekly sports communities
+
+Corporate sports clubs
+
+WhatsApp-based sports groups
+
+Casual weekend players
+
+4. Core Features (MVP)
+4.1 Session Setup
+
+User inputs:
+
+Number of courts (1 or 2)
+
+Session duration (e.g., 120 min)
+
+Match duration (e.g., 15–20 min)
+
+Player names (9–15)
+
+App calculates:
+
+Number of rounds
+
+Required rotations
+
+4.2 Smart Rotation Engine
+
+Goals:
+
+Equal playtime per player
+
+Balanced rest time
+
+Reduce same teammate repetition
+
+Reduce same opponent repetition (if possible)
+
+Output:
+
+Round 1:
+Court 1: A / B vs C / D
+Court 2: E / F vs G / H
+Rest: I
+
+Round 2:
+...
+4.3 Live Session View
+
+Big readable layout (mobile-first)
+
+“Next Round” button
+
+Visual indicator for:
+
+Playing
+
+Resting
+
+Optional sound/vibration reminder
+
+4.4 Fairness Metrics (Nice Touch)
+
+At end of session:
+
+Total games per player
+
+Total rest time
+
+Teammate frequency
+
+Opponent frequency
+
+This builds trust in the algorithm.
+
+5. Phase 2 Features (Future)
+
+Expense splitting (weekly/monthly)
+
+Persistent groups
+
+Player ranking/level balancing
+
+Auto shuffle vs skill-based shuffle
+
+Export session as image (for WhatsApp)
+
+QR-based session join
+
+PWA installable app
+
+Dark mode
+
+6. Technical Approach
+6.1 Architecture
+
+Static frontend only
+
+No backend (initially)
+
+Runs entirely in browser
+
+Data stored in:
+
+LocalStorage
+
+Or session memory
+
+6.2 Suggested Tech Stack
+
+Option A (Ultra simple):
+
+HTML
+
+Tailwind CSS
+
+Vanilla JS
+
+Option B (More scalable):
+
+React + Vite
+
+Tailwind
+
+Local storage state
+
+Option C (If you like structure):
+
+Next.js (static export)
+
+Deploy to Vercel
+
+7. Algorithm Strategy (Simple MVP)
+
+Basic approach:
+
+Calculate total rounds:
+
+totalRounds = sessionDuration / matchDuration
+
+For each round:
+
+Select 4 or 8 players (depending on courts)
+
+Rotate rest players cyclically
+
+Shuffle pairings with constraint rules
+
+Later improvements:
+
+Weighted fairness scoring
+
+Backtracking algorithm to reduce repetition
+
+Greedy balancing approach
+
+8. UX Principles
+
+One screen setup
+
+One screen live play
+
+No login friction
+
+Works offline
+
+Big buttons (sweaty fingers friendly 😄)
+
+High contrast UI (outdoor sunlight friendly)
