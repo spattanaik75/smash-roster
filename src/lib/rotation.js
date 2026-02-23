@@ -64,6 +64,7 @@ export function totalRounds(sessionMinutes, matchMinutes) {
 
 /**
  * Build all rounds for the session (greedy fairness).
+ * No auto-add; use buildNextRound() on demand when time allows.
  * @param {SessionConfig} config
  * @returns {Round[]}
  */
@@ -122,6 +123,58 @@ export function buildRounds(config) {
   }
 
   return result
+}
+
+/**
+ * Build one more round given existing rounds (for on-demand add when time allows).
+ * Uses same greedy fairness from current games/rest counts.
+ * @param {Round[]} rounds
+ * @param {SessionConfig} config
+ * @returns {Round | null} New round or null if not enough players
+ */
+export function buildNextRound(rounds, config) {
+  const { courts, gameMode, playerNames } = config
+  const perCourt = playersPerCourt(gameMode)
+  const playersPerRound = courts * perCourt
+  if (playerNames.length < perCourt) return null
+
+  const stats = fairnessStats(rounds, playerNames)
+  const sorted = [...stats].sort((a, b) => {
+    if (a.games !== b.games) return a.games - b.games
+    return b.restRounds - a.restRounds
+  })
+
+  const playing = sorted.slice(0, playersPerRound)
+  const rest = sorted.slice(playersPerRound).map((s) => s.name)
+
+  const roundMatches = []
+  for (let c = 0; c < courts; c++) {
+    const start = c * perCourt
+    const courtPlayers = playing.slice(start, start + perCourt).map((s) => s.name)
+    const half = perCourt / 2
+    roundMatches.push({
+      court: c + 1,
+      match: {
+        teamA: courtPlayers.slice(0, half),
+        teamB: courtPlayers.slice(half),
+      },
+    })
+  }
+
+  return {
+    roundIndex: rounds.length + 1,
+    courts: roundMatches,
+    rest,
+  }
+}
+
+/**
+ * Minutes left in session after completing N rounds.
+ * @param {SessionConfig} config
+ * @param {number} completedRounds
+ */
+export function leftoverMinutes(config, completedRounds) {
+  return config.sessionDurationMinutes - completedRounds * config.matchDurationMinutes
 }
 
 /**
