@@ -2,17 +2,19 @@
  * Marvel superhero avatars - using actual icon files from Flaticon.
  */
 
+const BASE_URL = import.meta.env.BASE_URL
+
 export const SUPERHERO_AVATARS = [
-  { id: 'spiderman', icon: '/icons/spiderman.png', name: 'Spider-Man', color: '#e53e3e' },
-  { id: 'ironman', icon: '/icons/iron-man.png', name: 'Iron Man', color: '#d69e2e' },
-  { id: 'thor', icon: '/icons/thor.png', name: 'Thor', color: '#3182ce' },
-  { id: 'hulk', icon: '/icons/hulk.png', name: 'Hulk', color: '#38a169' },
-  { id: 'batman', icon: '/icons/batman.png', name: 'Batman', color: '#2d3748' },
-  { id: 'flash', icon: '/icons/flash.png', name: 'Flash', color: '#e53e3e' },
-  { id: 'hawkeye', icon: '/icons/hawkeye.png', name: 'Hawkeye', color: '#805ad5' },
-  { id: 'panther', icon: '/icons/panther.png', name: 'Black Panther', color: '#2d3748' },
-  { id: 'humantorch', icon: '/icons/human-torch.png', name: 'Human Torch', color: '#ed8936' },
-  { id: 'wonderwoman', icon: '/icons/wonder-woman.png', name: 'Wonder Woman', color: '#e53e3e' },
+  { id: 'spiderman', icon: `${BASE_URL}icons/spiderman.png`, name: 'Spider-Man', color: '#e53e3e' },
+  { id: 'ironman', icon: `${BASE_URL}icons/iron-man.png`, name: 'Iron Man', color: '#d69e2e' },
+  { id: 'thor', icon: `${BASE_URL}icons/thor.png`, name: 'Thor', color: '#3182ce' },
+  { id: 'hulk', icon: `${BASE_URL}icons/hulk.png`, name: 'Hulk', color: '#38a169' },
+  { id: 'batman', icon: `${BASE_URL}icons/batman.png`, name: 'Batman', color: '#2d3748' },
+  { id: 'flash', icon: `${BASE_URL}icons/flash.png`, name: 'Flash', color: '#e53e3e' },
+  { id: 'hawkeye', icon: `${BASE_URL}icons/hawkeye.png`, name: 'Hawkeye', color: '#805ad5' },
+  { id: 'panther', icon: `${BASE_URL}icons/panther.png`, name: 'Black Panther', color: '#2d3748' },
+  { id: 'humantorch', icon: `${BASE_URL}icons/human-torch.png`, name: 'Human Torch', color: '#ed8936' },
+  { id: 'wonderwoman', icon: `${BASE_URL}icons/wonder-woman.png`, name: 'Wonder Woman', color: '#e53e3e' },
 ]
 
 /**
