@@ -28,7 +28,7 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
       {/* Court: vertical rectangle (portrait) with gradient and net */}
       <div
         className="relative w-full rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20"
-        style={{ aspectRatio: '9/16' }}
+        style={{ aspectRatio: '5/6' }}
       >
         {/* Court background with gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-emerald-600 via-emerald-500 to-teal-500" />
@@ -53,7 +53,7 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
         </div>
 
         {/* Team A – top half */}
-        <div className="absolute inset-0 top-0 bottom-1/2 flex items-center justify-center p-8 pb-12">
+        <div className="absolute inset-0 top-0 bottom-1/2 flex items-center justify-center p-6 pb-10">
           {isDoubles ? (
             <div className="flex flex-col w-full gap-3">
               {teamA.map((name, idx) => (
@@ -66,7 +66,7 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
         </div>
 
         {/* Team B – bottom half */}
-        <div className="absolute inset-0 top-1/2 bottom-0 flex items-center justify-center p-8 pt-12">
+        <div className="absolute inset-0 top-1/2 bottom-0 flex items-center justify-center p-6 pt-10">
           {isDoubles ? (
             <div className="flex flex-col w-full gap-3">
               {teamB.map((name, idx) => (
@@ -81,7 +81,7 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
 
       {/* Resting: outside court, below */}
       {rest.length > 0 && (
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 animate-fade-in">
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2 animate-fade-in">
           <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Sitting out</span>
           <div className="flex flex-wrap justify-center gap-2">
             {rest.map((name) => {

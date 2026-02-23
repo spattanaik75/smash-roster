@@ -51,7 +51,7 @@ function App() {
           </div>
         </header>
       )}
-      <main className={`max-w-lg mx-auto ${screen === 'live' ? 'p-4 pt-6' : 'p-6'}`}>
+      <main className={`max-w-lg mx-auto ${screen === 'live' ? 'p-3 pt-4' : 'p-6'}`}>
         <div key={screen} className="animate-fade-in">
           {screen === 'setup' && <SessionSetup onStart={handleStart} urlSession={urlSession} />}
           {screen === 'live' && config && (

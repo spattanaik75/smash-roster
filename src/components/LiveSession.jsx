@@ -89,9 +89,9 @@ export default function LiveSession({ config, onEnd }) {
   const showAddTab = leftoverAfterFinish >= MIN_LEFTOVER_TO_ADD_ROUND
 
   return (
-    <div className="flex flex-col min-h-[75vh]">
+    <div className="flex flex-col min-h-0">
       {/* Session info */}
-      <div className="flex items-center justify-between gap-3 mb-4 px-1">
+      <div className="flex items-center justify-between gap-3 mb-3 px-1">
         <div className="flex items-center gap-2">
           {!isOnAddTab ? (
             <>
@@ -186,7 +186,7 @@ export default function LiveSession({ config, onEnd }) {
       </div>
 
       {/* Dots navigation + add tab */}
-      <div className="flex justify-center items-center gap-2 py-4">
+      <div className="flex justify-center items-center gap-2 py-3">
         {rounds.map((_, idx) => (
           <button
             key={idx}
@@ -221,7 +221,7 @@ export default function LiveSession({ config, onEnd }) {
       </div>
 
       {/* Fairness so far – compact */}
-      <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-4 mb-4">
+      <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-3 mb-3">
         <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
           Games · Rest
         </p>
@@ -253,7 +253,7 @@ export default function LiveSession({ config, onEnd }) {
         <button
           type="button"
           onClick={goNext}
-          className="flex-1 py-3.5 px-5 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white text-sm font-semibold touch-manipulation hover:bg-white/15 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+          className="flex-1 py-3 px-5 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white text-sm font-semibold touch-manipulation hover:bg-white/15 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-lg"
         >
           {isLastRound ? 'Finish session' : 'Next round'}
         </button>
@@ -261,7 +261,7 @@ export default function LiveSession({ config, onEnd }) {
           <button
             type="button"
             onClick={addRound}
-            className="py-3.5 px-5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-sm font-semibold touch-manipulation whitespace-nowrap shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/40 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="py-3 px-5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-sm font-semibold touch-manipulation whitespace-nowrap shadow-xl shadow-emerald-500/30 hover:shadow-emerald-500/40 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
           >
             + Add round
           </button>
