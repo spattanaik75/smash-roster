@@ -2,6 +2,8 @@
 
 Fair rotations for your paddle group.
 
+**[Launch App →](https://spattanaik75.github.io/smash-roster/)**
+
 ## Overview
 
 SmashRoster is a progressive web app designed to manage player rotations for paddle sports (badminton, pickleball, etc.). It ensures fair court time distribution among all players in your group and tracks session statistics.
@@ -59,9 +61,12 @@ The production-ready files will be in the `dist` directory.
 
 ## Deployment
 
-This project is configured for GitHub Pages deployment.
+This project is deployed on GitHub Pages at:  
+**https://spattanaik75.github.io/smash-roster/**
 
-To deploy:
+The app automatically deploys via GitHub Actions when you push to the `main` branch.
+
+For manual deployment:
 ```bash
 npm run deploy
 ```
@@ -72,11 +77,3 @@ npm run deploy
 2. **Start Session**: Begin your session and the app will automatically manage rotations
 3. **Live Play**: Mark games as complete, and players rotate automatically
 4. **End Session**: View statistics and session summary
-
-## License
-
-MIT
-
-## Author
-
-Soumya Pattanaik
