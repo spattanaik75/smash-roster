@@ -8,12 +8,19 @@
  */
 
 /**
+ * @typedef {Object} Player
+ * @property {string} name
+ * @property {number} skillLevel - 1 to 5, where 5 is highest skill
+ */
+
+/**
  * @typedef {Object} SessionConfig
  * @property {number} courts
  * @property {number} sessionDurationMinutes
  * @property {number} matchDurationMinutes
  * @property {GameMode} gameMode
  * @property {string[]} playerNames
+ * @property {Player[]} [players] - Optional: players with skill levels
  */
 
 /**
@@ -43,6 +50,28 @@ export function parsePlayerNames(text) {
 }
 
 /**
+ * Parse players with skill levels from structured data.
+ * Format: "Name:3" or "Name" (defaults to skill 3)
+ * @param {string} text
+ * @returns {Player[]}
+ */
+export function parsePlayersWithSkill(text) {
+  if (!text || !text.trim()) return []
+  return text
+    .split(/[\n,]+/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const match = line.match(/^(.+?):(\d+)$/)
+      if (match) {
+        const skillLevel = Math.max(1, Math.min(5, parseInt(match[2], 10)))
+        return { name: match[1].trim(), skillLevel }
+      }
+      return { name: line, skillLevel: 3 }
+    })
+}
+
+/**
  * Players per court: 2 for singles, 4 for doubles.
  * @param {GameMode} mode
  * @returns {number}
@@ -63,13 +92,85 @@ export function totalRounds(sessionMinutes, matchMinutes) {
 }
 
 /**
- * Build all rounds for the session (greedy fairness).
+ * Calculate team skill balance score (lower is better).
+ * Returns the absolute difference between team totals.
+ * @param {string[]} teamA
+ * @param {string[]} teamB
+ * @param {Map<string, number>} skillMap
+ * @returns {number}
+ */
+function teamBalanceScore(teamA, teamB, skillMap) {
+  const sumA = teamA.reduce((sum, name) => sum + (skillMap.get(name) || 3), 0)
+  const sumB = teamB.reduce((sum, name) => sum + (skillMap.get(name) || 3), 0)
+  return Math.abs(sumA - sumB)
+}
+
+/**
+ * Create balanced teams from a list of players using skill levels.
+ * For doubles: tries to balance total skill between teams.
+ * For singles: just pairs players.
+ * @param {Array<{name: string, skillLevel?: number}>} players
+ * @param {number} perCourt
+ * @param {Map<string, number>} skillMap
+ * @returns {{teamA: string[], teamB: string[]}}
+ */
+function createBalancedMatch(players, perCourt, skillMap) {
+  const names = players.map(p => p.name)
+  const half = perCourt / 2
+  
+  if (perCourt === 2) {
+    // Singles: just split in half
+    return {
+      teamA: names.slice(0, half),
+      teamB: names.slice(half),
+    }
+  }
+  
+  // Doubles: try different team combinations to find best balance
+  // For 4 players, there are only 3 unique team combinations
+  const allCombinations = []
+  
+  // Generate all possible team splits
+  const generateTeams = (arr) => {
+    const results = []
+    // For 4 players (A,B,C,D), possible teams:
+    // AB vs CD, AC vs BD, AD vs BC
+    if (arr.length === 4) {
+      results.push({ teamA: [arr[0], arr[1]], teamB: [arr[2], arr[3]] })
+      results.push({ teamA: [arr[0], arr[2]], teamB: [arr[1], arr[3]] })
+      results.push({ teamA: [arr[0], arr[3]], teamB: [arr[1], arr[2]] })
+    } else {
+      // Fallback for other sizes
+      results.push({ teamA: arr.slice(0, half), teamB: arr.slice(half) })
+    }
+    return results
+  }
+  
+  const combinations = generateTeams(names)
+  
+  // Find the combination with the best balance
+  let bestMatch = combinations[0]
+  let bestScore = teamBalanceScore(bestMatch.teamA, bestMatch.teamB, skillMap)
+  
+  for (const combo of combinations.slice(1)) {
+    const score = teamBalanceScore(combo.teamA, combo.teamB, skillMap)
+    if (score < bestScore) {
+      bestScore = score
+      bestMatch = combo
+    }
+  }
+  
+  return bestMatch
+}
+
+/**
+ * Build all rounds for the session (greedy fairness + skill balancing).
  * No auto-add; use buildNextRound() on demand when time allows.
  * @param {SessionConfig} config
  * @returns {Round[]}
  */
 export function buildRounds(config) {
-  const { courts, sessionDurationMinutes, matchDurationMinutes, gameMode, playerNames } = config
+  const { courts, sessionDurationMinutes, matchDurationMinutes, gameMode, playerNames, players } = config
   const names = [...playerNames]
   if (names.length === 0) return []
 
@@ -79,8 +180,19 @@ export function buildRounds(config) {
   const perCourt = playersPerCourt(gameMode)
   const playersPerRound = courts * perCourt
 
-  /** @type {{ name: string; games: number; restRounds: number }[]} */
-  const state = names.map((name) => ({ name, games: 0, restRounds: 0 }))
+  // Build skill map
+  const skillMap = new Map()
+  if (players && players.length > 0) {
+    players.forEach(p => skillMap.set(p.name, p.skillLevel || 3))
+  }
+
+  /** @type {{ name: string; games: number; restRounds: number; skillLevel: number }[]} */
+  const state = names.map((name) => ({ 
+    name, 
+    games: 0, 
+    restRounds: 0,
+    skillLevel: skillMap.get(name) || 3
+  }))
 
   /** @type {Round[]} */
   const result = []
@@ -104,14 +216,14 @@ export function buildRounds(config) {
     const roundMatches = []
     for (let c = 0; c < courts; c++) {
       const start = c * perCourt
-      const courtPlayers = playing.slice(start, start + perCourt).map((s) => s.name)
-      const half = perCourt / 2
+      const courtPlayers = playing.slice(start, start + perCourt)
+      
+      // Create balanced teams based on skill
+      const match = createBalancedMatch(courtPlayers, perCourt, skillMap)
+      
       roundMatches.push({
         court: c + 1,
-        match: {
-          teamA: courtPlayers.slice(0, half),
-          teamB: courtPlayers.slice(half),
-        },
+        match,
       })
     }
 
@@ -127,16 +239,22 @@ export function buildRounds(config) {
 
 /**
  * Build one more round given existing rounds (for on-demand add when time allows).
- * Uses same greedy fairness from current games/rest counts.
+ * Uses same greedy fairness from current games/rest counts + skill balancing.
  * @param {Round[]} rounds
  * @param {SessionConfig} config
  * @returns {Round | null} New round or null if not enough players
  */
 export function buildNextRound(rounds, config) {
-  const { courts, gameMode, playerNames } = config
+  const { courts, gameMode, playerNames, players } = config
   const perCourt = playersPerCourt(gameMode)
   const playersPerRound = courts * perCourt
   if (playerNames.length < perCourt) return null
+
+  // Build skill map
+  const skillMap = new Map()
+  if (players && players.length > 0) {
+    players.forEach(p => skillMap.set(p.name, p.skillLevel || 3))
+  }
 
   const stats = fairnessStats(rounds, playerNames)
   const sorted = [...stats].sort((a, b) => {
@@ -150,14 +268,14 @@ export function buildNextRound(rounds, config) {
   const roundMatches = []
   for (let c = 0; c < courts; c++) {
     const start = c * perCourt
-    const courtPlayers = playing.slice(start, start + perCourt).map((s) => s.name)
-    const half = perCourt / 2
+    const courtPlayers = playing.slice(start, start + perCourt)
+    
+    // Create balanced teams based on skill
+    const match = createBalancedMatch(courtPlayers, perCourt, skillMap)
+    
     roundMatches.push({
       court: c + 1,
-      match: {
-        teamA: courtPlayers.slice(0, half),
-        teamB: courtPlayers.slice(half),
-      },
+      match,
     })
   }
 

@@ -1,11 +1,12 @@
 /**
  * Paddle court: modern visual with gradient, net, and player positioning.
  */
-export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }) {
+export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars, skillMap }) {
   const isDoubles = gameMode === 'doubles'
   
   const PlayerCard = ({ name, delay = 0 }) => {
     const avatar = avatars?.get(name)
+    const skill = skillMap?.get(name)
     return (
       <div
         className="flex items-center gap-2 rounded-xl glass-card-strong px-3 py-2.5 shadow-xl animate-slide-up"
@@ -19,6 +20,11 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
           />
         )}
         <span className="text-sm font-semibold text-slate-800 dark:text-white">{name}</span>
+        {skill && (
+          <span className="ml-auto text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full">
+            {skill}
+          </span>
+        )}
       </div>
     )
   }
@@ -86,6 +92,7 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
           <div className="flex flex-wrap justify-center gap-2">
             {rest.map((name) => {
               const avatar = avatars?.get(name)
+              const skill = skillMap?.get(name)
               return (
                 <span
                   key={name}
@@ -99,6 +106,11 @@ export default function CourtView({ teamA, teamB, rest = [], gameMode, avatars }
                     />
                   )}
                   <span>{name}</span>
+                  {skill && (
+                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                      {skill}
+                    </span>
+                  )}
                 </span>
               )
             })}

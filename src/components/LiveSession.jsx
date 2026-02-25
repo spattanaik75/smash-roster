@@ -11,6 +11,11 @@ export default function LiveSession({ config, onEnd }) {
   const [slideDirection, setSlideDirection] = useState(0)
   const [avatars] = useState(() => assignAvatars(config.playerNames))
   const touchStartX = useRef(0)
+  
+  const skillMap = new Map()
+  if (config.players && config.players.length > 0) {
+    config.players.forEach(p => skillMap.set(p.name, p.skillLevel))
+  }
 
   const currentRound = rounds[slideIndex]
   const isLastRound = slideIndex >= rounds.length - 1
@@ -165,6 +170,7 @@ export default function LiveSession({ config, onEnd }) {
                 rest={rest}
                 gameMode={config.gameMode}
                 avatars={avatars}
+                skillMap={skillMap}
               />
             )}
           </div>
@@ -228,6 +234,7 @@ export default function LiveSession({ config, onEnd }) {
         <div className="flex flex-wrap gap-2">
           {statsSoFar.map((s) => {
             const avatar = avatars.get(s.name)
+            const skill = skillMap.get(s.name)
             return (
               <span
                 key={s.name}
@@ -241,6 +248,9 @@ export default function LiveSession({ config, onEnd }) {
                   />
                 )}
                 <span className="font-medium text-slate-800 dark:text-white truncate max-w-[3.5rem]">{s.name}</span>
+                {skill && (
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">({skill})</span>
+                )}
                 <span className="text-slate-600 dark:text-slate-400">{s.games}·{s.restRounds}</span>
               </span>
             )
@@ -281,6 +291,11 @@ export function SummaryScreen({ config, rounds, onNewSession, onContinue }) {
   const avatars = assignAvatars(config.playerNames)
   const leftover = leftoverMinutes(config, rounds.length)
   const canContinue = leftover >= MIN_LEFTOVER_TO_ADD_ROUND
+  
+  const skillMap = new Map()
+  if (config.players && config.players.length > 0) {
+    config.players.forEach(p => skillMap.set(p.name, p.skillLevel))
+  }
 
   return (
     <div className="space-y-6 animate-slide-up">
@@ -289,6 +304,7 @@ export function SummaryScreen({ config, rounds, onNewSession, onContinue }) {
         <div className="space-y-2">
           {stats.map((s, idx) => {
             const avatar = avatars.get(s.name)
+            const skill = skillMap.get(s.name)
             return (
               <div
                 key={s.name}
@@ -304,6 +320,11 @@ export function SummaryScreen({ config, rounds, onNewSession, onContinue }) {
                     />
                   )}
                   <span className="font-medium text-slate-900 dark:text-white">{s.name}</span>
+                  {skill && (
+                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full">
+                      Skill {skill}
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
                   <span>{s.games} games</span>

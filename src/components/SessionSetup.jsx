@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { parsePlayerNames } from '../lib/rotation'
+import { parsePlayerNames, parsePlayersWithSkill } from '../lib/rotation'
 import { generateShareableURL } from '../lib/urlState'
 
 const STORAGE_KEY = 'smash-roster-last-session'
@@ -28,13 +28,20 @@ export default function SessionSetup({ onStart, urlSession }) {
   const [gameMode, setGameMode] = useState('doubles')
   const [playerInput, setPlayerInput] = useState('')
   const [showShareCopied, setShowShareCopied] = useState(false)
+  const [useSkillLevels, setUseSkillLevels] = useState(false)
 
   useEffect(() => {
     if (urlSession) {
       setSessionDuration(urlSession.sessionDurationMinutes ?? 120)
       setMatchDuration(urlSession.matchDurationMinutes ?? 15)
       setGameMode(urlSession.gameMode ?? 'doubles')
-      setPlayerInput((urlSession.playerNames ?? []).join('\n'))
+      
+      if (urlSession.players && urlSession.players.length > 0) {
+        setUseSkillLevels(true)
+        setPlayerInput(urlSession.players.map(p => `${p.name}:${p.skillLevel}`).join('\n'))
+      } else {
+        setPlayerInput((urlSession.playerNames ?? []).join('\n'))
+      }
     }
   }, [urlSession])
 
@@ -44,10 +51,17 @@ export default function SessionSetup({ onStart, urlSession }) {
     setSessionDuration(last.sessionDurationMinutes ?? 120)
     setMatchDuration(last.matchDurationMinutes ?? 15)
     setGameMode(last.gameMode ?? 'doubles')
-    setPlayerInput((last.playerNames ?? []).join('\n'))
+    
+    if (last.players && last.players.length > 0) {
+      setUseSkillLevels(true)
+      setPlayerInput(last.players.map(p => `${p.name}:${p.skillLevel}`).join('\n'))
+    } else {
+      setPlayerInput((last.playerNames ?? []).join('\n'))
+    }
   }, [])
 
-  const players = parsePlayerNames(playerInput)
+  const players = useSkillLevels ? parsePlayersWithSkill(playerInput) : parsePlayerNames(playerInput).map(name => ({ name, skillLevel: 3 }))
+  const playerNames = players.map(p => p.name)
   const perCourt = gameMode === 'singles' ? 2 : 4
   const canStart = players.length >= perCourt && players.length >= 1
 
@@ -58,7 +72,8 @@ export default function SessionSetup({ onStart, urlSession }) {
       sessionDurationMinutes: sessionDuration,
       matchDurationMinutes: matchDuration,
       gameMode,
-      playerNames: players,
+      playerNames,
+      players: useSkillLevels ? players : undefined,
     }
     saveLastSession(config)
     onStart(config)
@@ -71,7 +86,8 @@ export default function SessionSetup({ onStart, urlSession }) {
       sessionDurationMinutes: sessionDuration,
       matchDurationMinutes: matchDuration,
       gameMode,
-      playerNames: players,
+      playerNames,
+      players: useSkillLevels ? players : undefined,
     }
     const url = generateShareableURL(config)
     
@@ -185,15 +201,41 @@ export default function SessionSetup({ onStart, urlSession }) {
                 Load last
               </button>
             </div>
+            
+            {/* Skill level toggle */}
+            <div className="mb-3 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setUseSkillLevels(!useSkillLevels)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  useSkillLevels ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    useSkillLevels ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className="text-xs text-slate-600 dark:text-slate-400">
+                Use skill levels (1-5)
+              </span>
+            </div>
+            
             <textarea
               value={playerInput}
               onChange={(e) => setPlayerInput(e.target.value)}
-              placeholder="One per line or comma"
+              placeholder={useSkillLevels ? "Name:4\nName:3\nor one per line" : "One per line or comma"}
               rows={6}
               className="glass-input w-full py-3 px-4 rounded-lg text-slate-900 dark:text-white text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
             />
             <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
               {players.length} player{players.length !== 1 ? 's' : ''} · need {perCourt}+ per match
+              {useSkillLevels && (
+                <span className="block mt-1 text-slate-500 dark:text-slate-500">
+                  Format: Name:SkillLevel (1-5). Default is 3 if not specified.
+                </span>
+              )}
             </p>
           </div>
         </div>
